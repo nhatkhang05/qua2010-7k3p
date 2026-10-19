@@ -1,0 +1,1630 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<title>Quà 20/10 Dành Cho Cục Dàng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #FFF0F3;
+  --surface: #FFFFFF;
+  --ink: #3A0D1C;
+  --muted: #835263;
+  --accent: #D6204F;
+  --accent-light: #FF6B8B;
+  --soft: #FFD9E2;
+  --soft-hover: #ffc2d1;
+  --line: #F0BFCC;
+  --font-display: 'Baloo 2', cursive, sans-serif;
+  --font-body: 'Be Vietnam Pro', sans-serif;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  user-select: none;
+}
+
+canvas { position: fixed; inset: 0; pointer-events: none; width: 100vw; height: 100vh; }
+#bg { z-index: 0; }
+#fx { z-index: 100000; }
+
+.layer { position: relative; z-index: 10; }
+.ic { width: 1.1em; height: 1.1em; fill: currentColor; display: inline-block; vertical-align: middle; }
+
+/* =========================================
+   1. MÀN HÌNH KHOÁ NHẬP MẬT MÃ
+   ========================================= */
+#lock-screen {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #ffe6ec 0%, #ffc2d1 100%);
+  z-index: 9999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#lock-screen.unlocked {
+  opacity: 0;
+  transform: scale(1.08);
+  pointer-events: none;
+}
+
+.lock-card {
+  width: 100%;
+  max-width: 360px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  border-radius: 36px;
+  padding: 24px 20px 20px;
+  text-align: center;
+  box-shadow: 0 20px 45px rgba(214, 32, 79, 0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar-wrap {
+  width: 110px;
+  height: 110px;
+  margin: 0 auto 12px;
+}
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3.5px solid var(--accent);
+  box-shadow: 0 8px 20px rgba(214, 32, 79, 0.25);
+  animation: pulse-avatar 3s infinite ease-in-out;
+}
+@keyframes pulse-avatar {
+  0%, 100% { transform: scale(1); box-shadow: 0 8px 20px rgba(214, 32, 79, 0.25); }
+  50% { transform: scale(1.04); box-shadow: 0 12px 28px rgba(214, 32, 79, 0.4); }
+}
+
+.badge-date {
+  background: #111;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pass-dots {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 16px;
+  height: 18px;
+  align-items: center;
+}
+.pass-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: transparent;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.pass-dot.filled {
+  background: var(--accent);
+  transform: scale(1.25);
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 270px;
+}
+.key {
+  aspect-ratio: 1.35;
+  border-radius: 18px;
+  border: 0;
+  background: #FFB3C6;
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(255, 107, 139, 0.25);
+  transition: transform 0.1s, background 0.15s;
+}
+.key:active {
+  transform: scale(0.92);
+  background: var(--accent);
+}
+.key.action {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 800;
+  background: var(--soft-hover);
+  color: var(--accent);
+}
+
+.pass-hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 12px;
+  font-weight: 600;
+}
+
+.shake {
+  animation: shake 0.4s ease-in-out;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+
+/* =========================================
+   2. NÚT NHẠC XOAY TRÒN
+   ========================================= */
+.music-toggle {
+  position: fixed;
+  top: calc(18px + env(safe-area-inset-top, 0px));
+  right: calc(18px + env(safe-area-inset-right, 0px));
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(214, 32, 79, 0.25);
+  cursor: pointer;
+  z-index: 1000002;
+  transition: transform 0.2s;
+}
+.music-toggle.playing {
+  animation: rotateDisc 3.5s linear infinite;
+}
+@keyframes rotateDisc {
+  100% { transform: rotate(360deg); }
+}
+
+/* =========================================
+   3. GIAO DIỆN CHÍNH & PHÂN TRANG (TABS)
+   ========================================= */
+#main-app {
+  display: none;
+  min-height: 100vh;
+  padding-bottom: 120px;
+}
+
+.tab-pane {
+  display: none;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  padding-top: 6px;
+}
+.tab-pane.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  animation: tabIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 36px);
+  max-width: 480px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid rgba(240, 191, 204, 0.95);
+  border-radius: 26px;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 6px;
+  z-index: 999999;
+  box-shadow: 0 12px 36px rgba(214, 32, 79, 0.22);
+}
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 6px 2px;
+  border-radius: 16px;
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.nav-item .nav-icon {
+  font-size: 20px;
+  line-height: 1;
+  transition: transform 0.2s;
+}
+.nav-item.active {
+  color: var(--accent);
+  background: var(--soft);
+}
+.nav-item.active .nav-icon {
+  transform: scale(1.18);
+}
+
+.wrap {
+  max-width: 920px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(16px, 4vw, 28px);
+  padding-right: clamp(16px, 4vw, 28px);
+}
+
+.top { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; padding-top: 18px; }
+.from { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.chip { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 99px; background: var(--soft); font-size: 13px; font-weight: 600; }
+
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: center; padding: 20px 0 16px; }
+
+.big {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  font: 800 clamp(64px, 16vw, 136px)/0.9 var(--font-display);
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.big .beat {
+  width: 0.64em;
+  height: 0.6em;
+  flex: none;
+  fill: var(--accent);
+  margin: 0 0.05em;
+  animation: beat 1.5s ease-in-out infinite;
+}
+@keyframes beat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.16); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.08); }
+  56% { transform: scale(1); }
+}
+
+.lead { max-width: 48ch; margin: 16px 0 0; font-size: clamp(15px, 2.6vw, 19px); line-height: 1.55; }
+
+.sticker {
+  position: relative;
+  width: clamp(110px, 24vw, 140px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  transform: rotate(-6deg);
+  outline: 3px dashed var(--accent);
+  outline-offset: 6px;
+}
+.sticker-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+.sticker-badge {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #fff;
+  font: 800 12px/1.2 var(--font-display);
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 99px;
+  white-space: nowrap;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+}
+
+.ribbon-wrap { overflow: hidden; padding: 14px 0; margin: 8px -20px 20px; }
+.ribbon { background: var(--accent); color: #fff; transform: rotate(-1.4deg); padding: 12px 0; }
+.track { display: flex; width: max-content; animation: slide 30s linear infinite; }
+.track span { display: flex; align-items: center; gap: 18px; padding-right: 18px; white-space: nowrap; font-size: 13.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+@keyframes slide { to { transform: translateX(-50%); } }
+
+.eyebrow { font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0; }
+h2 { font: 800 clamp(26px, 5.5vw, 40px)/1.15 var(--font-display); margin: 6px 0 10px; color: var(--ink); }
+p.sub { margin: 0 0 18px; color: var(--muted); font-size: 14.5px; line-height: 1.5; }
+
+.btn {
+  appearance: none; border: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  font: 700 15px/1 var(--font-body); padding: 13px 22px; border-radius: 99px;
+  background: var(--accent); color: #fff; transition: transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 6px 18px rgba(214, 32, 79, 0.25);
+}
+.btn:active { transform: scale(0.96); }
+
+.wish-card {
+  position: relative; overflow: hidden; background: var(--surface); border: 2px solid var(--line);
+  border-radius: 26px; padding: clamp(20px, 4vw, 34px); min-height: 230px; display: flex; flex-direction: column; justify-content: space-between;
+  box-shadow: 0 10px 28px rgba(214, 32, 79, 0.08);
+}
+.wish-card .deco { position: absolute; right: -25px; bottom: -30px; width: 170px; height: 150px; fill: var(--soft); transform: rotate(12deg); pointer-events: none; }
+.wish-n { font-size: 12.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.wish-text { margin: 16px 0; font: 600 clamp(17px, 3.8vw, 23px)/1.45 var(--font-body); color: var(--ink); transition: opacity 0.18s, transform 0.18s; }
+.wish-text.out { opacity: 0; transform: translateY(8px); }
+
+.tickets { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); gap: 16px; }
+.tk { filter: drop-shadow(1px 0 0 var(--line)) drop-shadow(-1px 0 0 var(--line)) drop-shadow(0 1px 0 var(--line)) drop-shadow(0 -1px 0 var(--line)); }
+.ticket {
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 105px; background: var(--surface); border-radius: 20px; overflow: hidden;
+  -webkit-mask: radial-gradient(circle 10px at calc(100% - 105px) 0, #0000 98%, #000) top / 100% 51% no-repeat, radial-gradient(circle 10px at calc(100% - 105px) 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
+  mask: radial-gradient(circle 10px at calc(100% - 105px) 0, #0000 98%, #000) top / 100% 51% no-repeat, radial-gradient(circle 10px at calc(100% - 105px) 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
+}
+.t-body { padding: 18px 16px; min-width: 0; }
+.t-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+.t-body h3 { margin: 4px 0 0; font: 800 20px/1.15 var(--font-display); }
+.t-body p { margin: 6px 0 0; font-size: 13.5px; line-height: 1.45; color: var(--muted); }
+.t-stub { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 12px 6px; background: var(--soft); border-left: 2px dashed #FFA9BC; }
+.use {
+  appearance: none; cursor: pointer; border: 2px solid var(--accent); background: var(--accent); color: #fff;
+  font: 700 12px/1 var(--font-body); padding: 8px 12px; border-radius: 99px; transition: transform 0.15s;
+}
+.ticket.used .use { background: transparent; color: var(--accent); }
+.ticket.used .t-body { opacity: 0.45; }
+.stamp {
+  position: absolute; left: 16%; top: 50%; border: 3px solid var(--accent); color: var(--accent); border-radius: 10px; padding: 4px 14px;
+  font: 800 24px/1.1 var(--font-display); letter-spacing: 0.06em; text-transform: uppercase; pointer-events: none;
+  opacity: 0; transform: translateY(-50%) rotate(-12deg) scale(1.4); transition: all 0.25s cubic-bezier(.2,1.4,.4,1);
+}
+.ticket.used .stamp { opacity: 0.95; transform: translateY(-50%) rotate(-12deg) scale(1); }
+
+.sheet {
+  background: var(--surface); border: 2px solid var(--accent); outline: 1.5px solid var(--accent); outline-offset: 5px;
+  border-radius: 16px; padding: clamp(18px, 4vw, 36px); box-shadow: 0 10px 25px rgba(214, 32, 79, 0.06);
+}
+.sheet-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; flex-wrap: wrap; margin-bottom: 22px; }
+.seal { border: 2.5px solid var(--accent); color: var(--accent); border-radius: 8px; padding: 4px 14px; font: 800 22px/1 var(--font-display); transform: rotate(-8deg); }
+.meters { list-style: none; padding: 0; margin: 0; display: grid; gap: 18px; }
+.meter { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 8px 20px; align-items: center; }
+.m-name { font-weight: 700; font-size: 15px; }
+.m-note { margin: 2px 0 0; font-size: 13px; color: var(--muted); }
+.m-bar { display: flex; align-items: center; gap: 12px; }
+.bar { position: relative; flex: 1; height: 12px; border-radius: 99px; background: var(--soft); }
+.fill { height: 100%; width: calc(var(--v) * 1%); border-radius: inherit; background: var(--accent-light); transition: width 1.1s cubic-bezier(.2,.8,.2,1); }
+.tip { position: absolute; top: 50%; left: calc(var(--v) * 1%); width: 22px; height: 20px; transform: translate(-80%, -50%); fill: var(--accent); transition: left 1.1s cubic-bezier(.2,.8,.2,1); }
+.m-val { min-width: 3.4em; text-align: right; font: 800 20px/1 var(--font-display); font-variant-numeric: tabular-nums; }
+
+.final { position: relative; overflow: hidden; background: var(--accent); color: #fff; border-radius: 28px; padding: clamp(24px, 5vw, 44px); }
+.final .deco { position: absolute; fill: #fff; opacity: 0.12; pointer-events: none; }
+.final .d1 { right: -40px; bottom: -50px; width: 240px; height: 220px; transform: rotate(14deg); }
+.final h2 { max-width: 18ch; color: #fff; margin-top: 0; }
+.final p { max-width: 50ch; font-size: 15px; margin: 0; line-height: 1.6; }
+.final .btn { background: #fff; color: var(--accent); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+.sign { margin-top: 24px; font: 800 26px/1.1 var(--font-display); }
+.sign small { display: block; margin-top: 6px; font: 500 13px/1.45 var(--font-body); max-width: 44ch; opacity: 0.95; }
+
+.toast-wrap { position: fixed; left: 0; right: 0; bottom: 92px; z-index: 1000000; display: flex; justify-content: center; pointer-events: none; padding: 0 20px; }
+.toast { background: var(--ink); color: #fff; padding: 10px 18px; border-radius: 14px; font-size: 14px; font-weight: 600; opacity: 0; transform: translateY(10px); transition: 0.25s; text-align: center; }
+.toast.show { opacity: 1; transform: none; }
+
+@media (max-width: 600px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .meter { grid-template-columns: 1fr; }
+  .bottom-nav { width: calc(100% - 24px); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* =========================================
+   VŨ TRỤ TRÁI TIM (màn mở đầu sau khi nhập mật mã)
+   ========================================= */
+#cosmos {
+  position: fixed;
+  inset: 0;
+  z-index: 1000001;
+  display: none;
+  opacity: 0;
+  background: #05030c;
+  color: #fff;
+  overflow: hidden;
+  touch-action: none;
+  transition: opacity 0.7s ease;
+  --cmid: #ff4d86;
+  --cglow: rgba(255, 77, 134, 0.26);
+  --ctint: #ffa3c4;
+  --cy: 46%;
+}
+#cosmos.on { display: block; }
+#cosmos.vis { opacity: 1; }
+#cosmos::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(58% 42% at 50% var(--cy), var(--cglow), transparent 72%);
+  animation: cosGlow 2.4s ease-in-out infinite;
+}
+@keyframes cosGlow { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+
+#cosCv { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* Ảnh cặp đôi: đảo màu + blend screen để nền trắng biến mất, chỉ còn nét sáng neon */
+.cos-art {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #000;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform;
+}
+.cos-art img { display: block; width: 100%; height: auto; filter: invert(1) contrast(1.9) brightness(1.1); }
+.cos-art img.glow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  filter: invert(1) contrast(1.9) blur(7px) brightness(1.6);
+  opacity: 0.9;
+  mix-blend-mode: screen;
+}
+.cos-art::after { content: ""; position: absolute; inset: 0; background: var(--ctint); mix-blend-mode: multiply; }
+.cos-art.show { animation: artIn 2.6s cubic-bezier(0.3, 0.7, 0.2, 1) forwards; }
+@keyframes artIn {
+  0% { opacity: 0; clip-path: inset(0 0 100% 0); }
+  12% { opacity: 1; }
+  100% { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+
+.cos-flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle at 50% var(--cy), rgba(255, 255, 255, 0.6), var(--cglow) 40%, transparent 70%);
+}
+.cos-flash.go { animation: cosFlash 1s ease-out; }
+@keyframes cosFlash { 0% { opacity: 0.95; } 100% { opacity: 0; } }
+
+.cos-top {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(env(safe-area-inset-top, 0px) + 18px);
+  text-align: center;
+  pointer-events: none;
+}
+.cos-top b {
+  display: block;
+  font: 800 clamp(30px, 8vw, 46px)/1 var(--font-display);
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 22px var(--cmid);
+}
+.cos-top span {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.cos-cap {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 118px);
+  min-height: 1.3em;
+  text-align: center;
+  pointer-events: none;
+  font: 800 clamp(22px, 6vw, 32px)/1.2 var(--font-display);
+  text-shadow: 0 0 20px var(--cmid), 0 0 3px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.38s ease, transform 0.38s ease;
+}
+.cos-cap.out { opacity: 0; transform: translateY(10px); }
+
+.cos-bot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+}
+.cos-hint { font-size: 12.5px; opacity: 0; transition: opacity 0.8s; text-align: center; }
+.cos-hint.show { opacity: 0.7; }
+.cos-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.cos-btn {
+  appearance: none;
+  cursor: pointer;
+  font: 700 14px/1 var(--font-body);
+  color: #fff;
+  padding: 13px 18px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: transform 0.15s, opacity 0.5s;
+}
+.cos-btn:active { transform: scale(0.95); }
+.cos-btn:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.cos-go {
+  font-size: 16px;
+  font-weight: 800;
+  padding: 13px 26px;
+  border: 0;
+  background: linear-gradient(135deg, #ff6b9a, #d6204f);
+  box-shadow: 0 8px 28px rgba(255, 60, 120, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+}
+.cos-go.show { opacity: 1; pointer-events: auto; transform: none; animation: goPulse 1.8s ease-in-out 0.6s infinite; }
+@keyframes goPulse { 0%, 100% { box-shadow: 0 8px 28px rgba(255, 60, 120, 0.45); } 50% { box-shadow: 0 8px 40px rgba(255, 60, 120, 0.85); } }
+
+/* =========================================
+   Chỉnh thêm cho các tab
+   ========================================= */
+@keyframes tabIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.meters.pre .fill { width: 0; }
+.meters.pre .tip { left: 0; }
+.meters.nt .fill, .meters.nt .tip { transition: none !important; }
+.meter .fill, .meter .tip { transition-delay: var(--d, 0s); }
+
+#letterText.typing::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  background: #fff;
+  vertical-align: -0.15em;
+  animation: caret 0.8s steps(1) infinite;
+}
+@keyframes caret { 50% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .cos-art.show { animation-duration: 0.01s; }
+  #cosmos::before, .cos-go.show { animation: none; }
+}
+
+/* chip ngày không bị nút nhạc che */
+.top { padding-right: 58px; }
+</style>
+</head>
+
+<body>
+
+<svg aria-hidden="true" style="position:absolute;width:0;height:0">
+  <symbol id="hrt" viewBox="0 0 100 90"><path d="M50 86C22 64 4 47 4 28 4 14 15 5 28 5c9 0 18 5 22 14 4-9 13-14 22-14 13 0 24 9 24 23 0 19-18 36-46 58z"/></symbol>
+</svg>
+
+<canvas id="bg"></canvas>
+<canvas id="fx"></canvas>
+
+<!-- NHẠC NỀN CHUẨN TÊN FILE NHAC.M4A CỦA BẠN -->
+<audio id="bgm" loop preload="auto">
+  <source src="nhac.m4a" type="audio/mp4">
+  <source src="nhac.m4a" type="audio/x-m4a">
+</audio>
+
+<!-- Nút xoay đĩa nhạc -->
+<button class="music-toggle" id="musicBtn" title="Bật/Tắt nhạc" style="display:none">
+  <svg class="ic" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+</button>
+
+<!-- =========================================
+     1. MÀN HÌNH NHẬP MẬT MÃ
+     ========================================= -->
+<div id="lock-screen">
+  <div class="lock-card" id="lockCard">
+    <div class="avatar-wrap">
+      <img src="img/beiu.jpg" alt="Cục dàng" class="avatar-img">
+    </div>
+    <div class="badge-date">Nay 20/10 ♥ Ngày Của Em</div>
+    
+    <div class="pass-dots">
+      <div class="pass-dot" id="dot0"></div>
+      <div class="pass-dot" id="dot1"></div>
+      <div class="pass-dot" id="dot2"></div>
+      <div class="pass-dot" id="dot3"></div>
+      <div class="pass-dot" id="dot4"></div>
+      <div class="pass-dot" id="dot5"></div>
+    </div>
+
+    <div class="keypad">
+      <button class="key" data-val="1">1</button>
+      <button class="key" data-val="2">2</button>
+      <button class="key" data-val="3">3</button>
+      <button class="key" data-val="4">4</button>
+      <button class="key" data-val="5">5</button>
+      <button class="key" data-val="6">6</button>
+      <button class="key" data-val="7">7</button>
+      <button class="key" data-val="8">8</button>
+      <button class="key" data-val="9">9</button>
+      <button class="key action" id="keyClear">C</button>
+      <button class="key" data-val="0">0</button>
+      <button class="key action" id="keyOk">OK</button>
+    </div>
+    
+    <div class="pass-hint">Nhập mật mã để mở quà bí mật</div>
+  </div>
+</div>
+
+<!-- =========================================
+     2. GIAO DIỆN CHÍNH
+     ========================================= -->
+<div id="main-app">
+
+  <!-- TAB 1: TRANG CHỦ -->
+  <div class="tab-pane active" id="tab-home">
+    <header class="layer wrap">
+      <div class="top">
+        <span class="from">Gửi cục dàng, từ anh</span>
+        <span class="chip"><svg class="ic"><use href="#hrt"/></svg><span id="when">Ngày 20 tháng 10</span></span>
+      </div>
+      <div class="hero-grid">
+        <div>
+          <h1 class="big"><span>20</span><svg class="beat" viewBox="0 0 100 90"><use href="#hrt"/></svg><span>10</span></h1>
+          <p class="lead">Hôm nay em là VIP. Anh làm trang này để chúc mừng 20/10, bên dưới có từng mục lời chúc, voucher và bảng điểm dành riêng cho em.</p>
+        </div>
+        
+        <div class="sticker">
+          <img src="img/beiu.jpg" alt="Em bé VIP" class="sticker-img">
+          <div class="sticker-badge">VIP SỐ 1</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="ribbon-wrap layer">
+      <div class="ribbon">
+        <div class="track">
+          <span>Chúc mừng 20/10<svg class="ic"><use href="#hrt"/></svg>Em là số 1<svg class="ic"><use href="#hrt"/></svg>Hôm nay em có quyền<svg class="ic"><use href="#hrt"/></svg>Một năm bên nhau<svg class="ic"><use href="#hrt"/></svg></span>
+          <span>Chúc mừng 20/10<svg class="ic"><use href="#hrt"/></svg>Em là số 1<svg class="ic"><use href="#hrt"/></svg>Hôm nay em có quyền<svg class="ic"><use href="#hrt"/></svg>Một năm bên nhau<svg class="ic"><use href="#hrt"/></svg></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap layer" style="text-align: center; margin-top: 24px;">
+      <p style="color: var(--muted); font-size: 15px; font-weight:600;">👉 Bấm vào các mục menu nổi phía dưới để mở từng món quà nha!</p>
+      <p style="margin:18px 0 0"><button class="btn" id="openCosmos" type="button">🌌 Xem lại vũ trụ tình yêu</button></p>
+    </div>
+  </div>
+
+  <!-- TAB 2: LỜI CHÚC -->
+  <div class="tab-pane" id="tab-wish">
+    <section class="layer wrap" style="padding-top: 14px;">
+      <p class="eyebrow">Hộp lời chúc</p>
+      <h2>Bấm một cái, nhận một lời chúc</h2>
+      <p class="sub">Anh chuẩn bị sẵn 10 lời chúc ngẫu nhiên không trùng. Bấm nút để mở lời chúc tiếp theo nhé.</p>
+      
+      <div class="wish-card">
+        <svg class="deco" viewBox="0 0 100 90"><use href="#hrt"/></svg>
+        <div class="wish-n"><svg class="ic"><use href="#hrt"/></svg><span id="wish-n">Lời chúc 1/10</span></div>
+        <p class="wish-text" id="wish-text">Chúc em 20/10 một ngày vui vẻ, ngập tràn tiếng cười và gặp thật nhiều may mắn nè.</p>
+        <div>
+          <button class="btn" id="draw" type="button"><svg class="ic"><use href="#hrt"/></svg>Bốc lời chúc tiếp</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- TAB 3: SỔ VOUCHER -->
+  <div class="tab-pane" id="tab-voucher">
+    <section class="layer wrap" style="padding-top: 14px;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:14px;">
+        <div>
+          <p class="eyebrow">Sổ voucher độc quyền</p>
+          <h2 style="margin:4px 0 0">Năm voucher đặc quyền</h2>
+        </div>
+        <span class="chip"><svg class="ic"><use href="#hrt"/></svg>Đã dùng <b id="used-count" style="margin:0 4px">0</b>/5</span>
+      </div>
+      <p class="sub">Bấm "Dùng ngay" là anh nhận lệnh. Hạn sử dụng vĩnh viễn tới khi nào em còn thích!</p>
+
+      <div class="tickets" id="tickets">
+        <div class="tk"><article class="ticket" data-id="food">
+          <div class="t-body"><span class="t-tag">Ăn uống</span><h3>Chọn quán ăn</h3><p>Em chọn quán, anh không hỏi “sao không đi chỗ khác”.</p></div>
+          <div class="t-stub"><svg class="ic"><use href="#hrt"/></svg><button class="use" type="button">Dùng ngay</button></div>
+          <div class="stamp">Đã dùng</div>
+        </article></div>
+
+        <div class="tk"><article class="ticket" data-id="sorry">
+          <div class="t-body"><span class="t-tag">Xin lỗi</span><h3>Xin lỗi miễn phí</h3><p>Dùng khi anh lỡ làm sai. Anh nhận lỗi liền, không cãi.</p></div>
+          <div class="t-stub"><svg class="ic"><use href="#hrt"/></svg><button class="use" type="button">Dùng ngay</button></div>
+          <div class="stamp">Đã dùng</div>
+        </article></div>
+
+        <div class="tk"><article class="ticket" data-id="tea">
+          <div class="t-body"><span class="t-tag">Trà sữa</span><h3>Một ly đủ topping</h3><p>Chỉ cần em muốn uống lúc nào anh sẽ mua, cục dàng yên tâm.</p></div>
+          <div class="t-stub"><svg class="ic"><use href="#hrt"/></svg><button class="use" type="button">Dùng ngay</button></div>
+          <div class="stamp">Đã dùng</div>
+        </article></div>
+
+        <div class="tk"><article class="ticket" data-id="listen">
+          <div class="t-body"><span class="t-tag">Tâm sự</span><h3>Nghe than 15 phút</h3><p>Anh nghe hết, không khuyên trừ khi em hỏi, sẵn sàng cho mượn bờ vai khi mệt mỏi.</p></div>
+          <div class="t-stub"><svg class="ic"><use href="#hrt"/></svg><button class="use" type="button">Dùng ngay</button></div>
+          <div class="stamp">Đã dùng</div>
+        </article></div>
+
+        <div class="tk"><article class="ticket" data-id="photo">
+          <div class="t-body"><span class="t-tag">Chụp hình</span><h3>Thợ chụp riêng</h3><p>Chụp 20 tấm, góc nào cũng được. Cấm anh hỏi “xong chưa”.</p></div>
+          <div class="t-stub"><svg class="ic"><use href="#hrt"/></svg><button class="use" type="button">Dùng ngay</button></div>
+          <div class="stamp">Đã dùng</div>
+        </article></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- TAB 4: BẢNG ĐIỂM -->
+  <div class="tab-pane" id="tab-score">
+    <section class="layer wrap" style="padding-top: 14px;">
+      <div class="sheet">
+        <div class="sheet-head">
+          <div>
+            <p class="eyebrow">Hồ sơ năng lực</p>
+            <h2>Bảng điểm của em</h2>
+            <p class="sub" style="margin:0">Đánh giá hoàn toàn khách quan từ góc nhìn của anh.</p>
+          </div>
+          <div class="seal">Xuất sắc</div>
+        </div>
+        <ul class="meters" id="meters">
+          <li class="meter" style="--v:100">
+            <div><div class="m-name">Độ xinh đẹp</div><p class="m-note">Vượt thang đo, anh đo hoài không hết.</p></div>
+            <div class="m-bar"><div class="bar"><div class="fill"></div><svg class="tip"><use href="#hrt"/></svg></div><span class="m-val">100%+</span></div>
+          </li>
+          <li class="meter" style="--v:99">
+            <div><div class="m-name">Độ đáng yêu</div><p class="m-note">Còn 1% là lúc em giận block anh.</p></div>
+            <div class="m-bar"><div class="bar"><div class="fill"></div><svg class="tip"><use href="#hrt"/></svg></div><span class="m-val">99%</span></div>
+          </li>
+          <li class="meter" style="--v:96">
+            <div><div class="m-name">Kiên nhẫn với anh</div><p class="m-note">Cảm ơn bé iu, anh biết em đã cố gắng lắm.</p></div>
+            <div class="m-bar"><div class="bar"><div class="fill"></div><svg class="tip"><use href="#hrt"/></svg></div><span class="m-val">96%</span></div>
+          </li>
+          <li class="meter" style="--v:100">
+            <div><div class="m-name">Độ nguy hiểm khi đói</div><p class="m-note">Anh luôn chuẩn bị sẵn đồ ăn phòng hờ.</p></div>
+            <div class="m-bar"><div class="bar"><div class="fill"></div><svg class="tip"><use href="#hrt"/></svg></div><span class="m-val">100%</span></div>
+          </li>
+          <li class="meter" style="--v:40">
+            <div><div class="m-name">Pin năng lượng</div><p class="m-note">Đang sạc bằng trà sữa và những cái ôm, cái hun.</p></div>
+            <div class="m-bar"><div class="bar"><div class="fill"></div><svg class="tip"><use href="#hrt"/></svg></div><span class="m-val">40%</span></div>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <!-- TAB 5: LỜI NHẮN CUỐI -->
+  <div class="tab-pane" id="tab-letter">
+    <section class="layer wrap" style="padding-top: 14px;">
+      <div class="final">
+        <svg class="deco d1" viewBox="0 0 100 90"><use href="#hrt"/></svg>
+        <p class="eyebrow" style="color:#fff; opacity:0.85">Gửi từ tận đáy lòng</p>
+        <h2>Một năm rồi, cảm ơn em đã chịu được anh</h2>
+        <p id="letterText">20/10 là cái cớ để anh nói điều này cho đàng hoàng. Chúc cục dàng của anh luôn vui, khỏe, ăn uống đúng bữa. Cảm ơn cục dàng luôn yêu thương anh, luôn hiểu anh và hết giận tha lỗi cho anh qua những lần anh phạm sai lầm quên lời hứa ạ. Cảm ơn cục dàng đã đồng ý cho anh bên cạnh em để được yêu được thương em nhiều hơn nữa và tìm hiểu em hơn để có thể bên cạnh em về sau lâu dài ạ. <br><br><b style="font-size: 1.15em;">YÊU EM, THƯƠNG EM LẮM Ạ! ♥</b></p>
+        
+        <div style="display:flex; align-items:center; gap:16px; margin-top:22px; flex-wrap:wrap;">
+          <button class="btn" id="send" type="button"><svg class="ic"><use href="#hrt"/></svg>Bắn tim cho anh</button>
+          <span>Đã gửi <b id="sent" style="font-size:1.2em">0</b> trái tim</span>
+        </div>
+
+        <div class="sign">Anh<small>Người yêu của em, kiêm tài xế, thợ chụp hình, trợ lý tài năng, hướng dẫn viên du lịch, người lên lịch đi chơi, đi ăn, chuyên gia tư vấn tâm lý, PT,...</small></div>
+      </div>
+    </section>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-target="tab-home">
+      <span class="nav-icon">🌸</span>
+      <span>20/10</span>
+    </button>
+    <button class="nav-item" data-target="tab-wish">
+      <span class="nav-icon">💌</span>
+      <span>Lời chúc</span>
+    </button>
+    <button class="nav-item" data-target="tab-voucher">
+      <span class="nav-icon">🎟️</span>
+      <span>Voucher</span>
+    </button>
+    <button class="nav-item" data-target="tab-score">
+      <span class="nav-icon">📊</span>
+      <span>Bảng điểm</span>
+    </button>
+    <button class="nav-item" data-target="tab-letter">
+      <span class="nav-icon">💖</span>
+      <span>Thư gửi</span>
+    </button>
+  </nav>
+
+</div>
+
+<!-- =========================================
+     VŨ TRỤ TRÁI TIM (màn mở đầu) - cần file img/couple.jpg
+     ========================================= -->
+<div id="cosmos" role="dialog" aria-label="Vũ trụ trái tim" aria-hidden="true">
+  <canvas id="cosCv"></canvas>
+  <div class="cos-art" id="cosArt">
+    <img src="img/couple.jpg" alt="" onerror="this.parentNode.style.display='none'">
+    <img class="glow" src="img/couple.jpg" alt="">
+  </div>
+  <div class="cos-flash" id="cosFlash"></div>
+  <div class="cos-top"><b>20 · 10</b><span id="cosSub">Ngày của em</span></div>
+  <div class="cos-cap" id="cosCap"></div>
+  <div class="cos-bot">
+    <div class="cos-hint" id="cosHint">Chạm giữ để hút tim · thả tay để nổ tung</div>
+    <div class="cos-row">
+      <button type="button" class="cos-btn" id="cosTheme">🎨 Hồng tim</button>
+      <button type="button" class="cos-btn cos-go" id="cosGo">Mở quà nè ♥</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap"><div class="toast" id="toast"></div></div>
+
+<script>
+(function() {
+  const CORRECT_PASS = "300905";
+  let inputPass = "";
+  
+  const lockScreen = document.getElementById("lock-screen");
+  const lockCard = document.getElementById("lockCard");
+  const mainApp = document.getElementById("main-app");
+  const bgm = document.getElementById("bgm");
+  const musicBtn = document.getElementById("musicBtn");
+  const toastEl = document.getElementById("toast");
+
+  function showToast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    setTimeout(() => toastEl.classList.remove("show"), 2500);
+  }
+
+  function playMusic() {
+    bgm.play().then(() => {
+      musicBtn.classList.add("playing");
+    }).catch(err => {
+      console.log("Audio play error:", err);
+      showToast("Bấm nút đĩa quay ở góc trên để bật nhạc nha!");
+    });
+  }
+
+  function updateDots() {
+    for (let i = 0; i < 6; i++) {
+      const dot = document.getElementById(`dot${i}`);
+      if (i < inputPass.length) dot.classList.add("filled");
+      else dot.classList.remove("filled");
+    }
+  }
+
+  function checkPass() {
+    if (inputPass === CORRECT_PASS) {
+      burst(window.innerWidth / 2, window.innerHeight / 2, 45);
+      lockScreen.classList.add("unlocked");
+      musicBtn.style.display = "flex";
+
+      // Phát trực tiếp tệp nhac.m4a
+      playMusic();
+
+      setTimeout(() => {
+        lockScreen.style.display = "none";
+        mainApp.style.display = "block";
+        if (window.Cosmos) window.Cosmos.open(true);
+      }, 500);
+    } else {
+      lockCard.classList.add("shake");
+      showToast("Mật mã chưa đúng rồi nè, thử lại nha bé iu!");
+      setTimeout(() => {
+        lockCard.classList.remove("shake");
+        inputPass = "";
+        updateDots();
+      }, 500);
+    }
+  }
+
+  document.querySelectorAll(".key[data-val]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (inputPass.length < 6) {
+        inputPass += btn.dataset.val;
+        updateDots();
+        if (inputPass.length === 6) setTimeout(checkPass, 140);
+      }
+    });
+  });
+
+  document.getElementById("keyClear").addEventListener("click", () => {
+    inputPass = "";
+    updateDots();
+  });
+
+  document.getElementById("keyOk").addEventListener("click", () => {
+    if (inputPass.length > 0) checkPass();
+  });
+
+  musicBtn.addEventListener("click", () => {
+    if (bgm.paused) {
+      bgm.play();
+      musicBtn.classList.add("playing");
+    } else {
+      bgm.pause();
+      musicBtn.classList.remove("playing");
+    }
+  });
+
+  const navItems = document.querySelectorAll(".nav-item");
+  const tabPanes = document.querySelectorAll(".tab-pane");
+
+  navItems.forEach(item => {
+    item.addEventListener("click", () => {
+      const targetId = item.dataset.target;
+      navItems.forEach(n => n.classList.remove("active"));
+      tabPanes.forEach(p => p.classList.remove("active"));
+      
+      item.classList.add("active");
+      const targetPane = document.getElementById(targetId);
+      targetPane.classList.add("active");
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      burst(window.innerWidth / 2, window.innerHeight - 90, 10);
+      if (window.onTabShown) window.onTabShown(targetId);
+    });
+  });
+
+  /* ---------- Canvas hiệu ứng pháo tim lung linh ---------- */
+  const bg = document.getElementById('bg'), fx = document.getElementById('fx');
+  const bx = bg.getContext('2d'), fxx = fx.getContext('2d');
+  let W = 0, H = 0, parts = [], amb = [];
+  const pal = ['#D6204F', '#FF6B8B', '#FFA9BC', '#8E1536'];
+
+  function heart(c, x, y, s, rot, col, a) {
+    c.save(); c.translate(x, y); c.rotate(rot); c.scale(s, s); c.globalAlpha = a; c.fillStyle = col;
+    c.beginPath(); c.moveTo(0, 0.45);
+    c.bezierCurveTo(-0.15, 0.3, -0.5, 0.1, -0.5, -0.15);
+    c.bezierCurveTo(-0.5, -0.4, -0.15, -0.5, 0, -0.2);
+    c.bezierCurveTo(0.15, -0.5, 0.5, -0.4, 0.5, -0.15);
+    c.bezierCurveTo(0.5, 0.1, 0.15, 0.3, 0, 0.45);
+    c.closePath(); c.fill(); c.restore();
+  }
+
+  function resize() {
+    W = window.innerWidth; H = window.innerHeight;
+    const dp = Math.min(window.devicePixelRatio || 1, 2);
+    bg.width = fx.width = Math.round(W * dp); bg.height = fx.height = Math.round(H * dp);
+    bx.setTransform(dp, 0, 0, dp, 0, 0); fxx.setTransform(dp, 0, 0, dp, 0, 0);
+    amb = [];
+    for (let i = 0; i < 18; i++) {
+      amb.push({ x: Math.random() * W, y: Math.random() * H, s: 14 + Math.random() * 26, v: 0.15 + Math.random() * 0.3, a: 0.1 + Math.random() * 0.16 });
+    }
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function burst(x, y, n) {
+    for (let i = 0; i < n; i++) {
+      const a = Math.random() * Math.PI * 2, sp = 2 + Math.random() * 5.5;
+      parts.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 1.5, s: 14 + Math.random() * 22, rot: Math.random() * 2, c: pal[Math.floor(Math.random() * pal.length)], life: 1 });
+    }
+  }
+  document.addEventListener('pointerdown', e => burst(e.clientX, e.clientY, 8));
+  window.heartBurst = burst;
+
+  /* Vệt tim bay theo ngón tay / con trỏ chuột */
+  let lastTrail = 0;
+  document.addEventListener('pointermove', e => {
+    const now = performance.now();
+    if (now - lastTrail < 45) return;
+    lastTrail = now;
+    parts.push({ x: e.clientX, y: e.clientY, vx: (Math.random() - 0.5) * 1.4, vy: -0.5 - Math.random() * 0.9, s: 9 + Math.random() * 9, rot: (Math.random() - 0.5), c: pal[Math.floor(Math.random() * pal.length)], life: 0.75 });
+  });
+
+  function anim() {
+    bx.clearRect(0, 0, W, H);
+    amb.forEach(h => {
+      h.y -= h.v;
+      if (h.y < -30) { h.y = H + 30; h.x = Math.random() * W; }
+      heart(bx, h.x, h.y, h.s, 0, '#FF8FA9', h.a);
+    });
+
+    fxx.clearRect(0, 0, W, H);
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const p = parts[i];
+      p.x += p.vx; p.y += p.vy; p.vy += 0.08; p.life -= 0.015;
+      if (p.life <= 0) { parts.splice(i, 1); continue; }
+      heart(fxx, p.x, p.y, p.s * p.life, p.rot, p.c, p.life);
+    }
+    requestAnimationFrame(anim);
+  }
+  anim();
+
+  /* ---------- Hộp lời chúc ---------- */
+  const wishes = [
+    'Chúc em 20/10 một ngày vui vẻ, ngập tràn tiếng cười và gặp thật nhiều may mắn nè.',
+    'Chúc bé iu dự định làm việc gì đều suôn sẻ, thuận lợi và không gặp khó khăn.',
+    'Chúc cục dàng luôn vui vẻ, tươi cười và không bao giờ gặp chuyện buồn phiền ạ.',
+    'Chúc cục dàng gặp sale nào cũng còn size, gặp deadline nào cũng được dời thêm.',
+    'Chúc em iu ăn uống điều độ, không lo tăng cân mà dáng lúc nào cũng đẹp nè.',
+    'Chúc bé iu của anh luôn xinh đẹp, giỏi giang và gặt hái được thật nhiều thành công.',
+    'Chúc bé iu luôn bình tĩnh giải quyết vấn đề cẩn thận, không suy nghĩ nhiều và bớt overthinking nè.',
+    'Chúc em iu mỗi ngày đều cảm nhận được trọn vẹn tình yêu và sự chiều chuộng từ anh.',
+    'Chúc em iu luôn giữ nụ cười rạng rỡ trên môi, mệt mỏi cứ tựa vai anh, ôm anh và sẽ tặng kèm 1 nụ hôn là hết liền.',
+    'Nếu cục dàng anh có gặp chuyện gì tức giận ấm ức thì về đây tâm sự anh nghe, anh sẽ giải quyết và đồng thời cũng là bao cát để em trách móc cho đỡ ấm ức nè.'
+  ];
+  let wishPool = [...wishes.keys()].slice(1);
+  let wishCount = 1;
+  document.getElementById('draw').addEventListener('click', function(e) {
+    if (!wishPool.length) wishPool = [...wishes.keys()];
+    const idx = wishPool.splice(Math.floor(Math.random() * wishPool.length), 1)[0];
+    wishCount++;
+    const textEl = document.getElementById('wish-text');
+    textEl.classList.add('out');
+    setTimeout(() => {
+      textEl.textContent = wishes[idx];
+      document.getElementById('wish-n').textContent = `Lời chúc ${((wishCount-1)%10)+1}/10`;
+      textEl.classList.remove('out');
+    }, 180);
+    const r = e.currentTarget.getBoundingClientRect();
+    burst(r.left + r.width / 2, r.top, 12);
+  });
+
+  /* ---------- Sổ Voucher ---------- */
+  let used = [];
+  try { used = JSON.parse(localStorage.getItem('vouchers-2010') || '[]'); } catch(e){}
+  const ticketEls = document.querySelectorAll('.ticket');
+  function updateTickets() {
+    ticketEls.forEach(tk => {
+      const isUsed = used.includes(tk.dataset.id);
+      tk.classList.toggle('used', isUsed);
+      tk.querySelector('.use').textContent = isUsed ? 'Hoàn tác' : 'Dùng ngay';
+    });
+    document.getElementById('used-count').textContent = used.length;
+  }
+  document.getElementById('tickets').addEventListener('click', e => {
+    const btn = e.target.closest('.use');
+    if (!btn) return;
+    const tk = btn.closest('.ticket'), id = tk.dataset.id;
+    if (used.includes(id)) {
+      used = used.filter(x => x !== id);
+      showToast('Đã hoàn tác lại voucher cho bé iu.');
+    } else {
+      used.push(id);
+      showToast('Đã nhận lệnh: ' + tk.querySelector('h3').textContent + '! Anh lo liền.');
+      const r = btn.getBoundingClientRect(); burst(r.left + r.width/2, r.top, 16);
+    }
+    localStorage.setItem('vouchers-2010', JSON.stringify(used));
+    updateTickets();
+  });
+  updateTickets();
+
+  /* ---------- Nút bắn tim ---------- */
+  let sentCount = 0;
+  document.getElementById('send').addEventListener('click', function(e) {
+    sentCount += 5;
+    document.getElementById('sent').textContent = sentCount;
+    const r = e.currentTarget.getBoundingClientRect();
+    burst(r.left + r.width / 2, r.top, 24);
+    for (let i = 1; i < 4; i++) setTimeout(() => burst(Math.random() * W, H * (0.25 + Math.random() * 0.5), 18), i * 140);
+  });
+
+})();
+</script>
+
+<script>
+/* =========================================================
+   VŨ TRỤ TRÁI TIM
+   - Chữ "ANH YÊU EM" chạy quanh viền trái tim (mẫu 15_i_love_you_heart)
+   - Dòng hạt photon xoáy hình trái tim, sao băng, chữ tình yêu đa ngôn ngữ,
+     sóng xung kích hình tim (mẫu 19_The_Cosmic_Phonon_Lotus)
+   - Chạm giữ: hút hạt | Thả tay: nổ supernova | Nút 🎨: đổi màu
+   ========================================================= */
+(function () {
+  'use strict';
+  var root = document.getElementById('cosmos');
+  if (!root) return;
+  var cv = document.getElementById('cosCv');
+  var ctx = cv.getContext('2d');
+  var art = document.getElementById('cosArt');
+  var capEl = document.getElementById('cosCap');
+  var subEl = document.getElementById('cosSub');
+  var hintEl = document.getElementById('cosHint');
+  var goBtn = document.getElementById('cosGo');
+  var themeBtn = document.getElementById('cosTheme');
+  var flashEl = document.getElementById('cosFlash');
+  var reduce = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var TAU = Math.PI * 2;
+
+  /* Muốn hiện "Ngày thứ N bên nhau": điền ngày bắt đầu yêu theo dạng 'năm-tháng-ngày', ví dụ '2025-10-20' */
+  var LOVE_START = '';
+
+  var THEMES = [
+    { name: 'Hồng tim',    core: [255, 228, 238], mid: [255, 77, 134], outer: [214, 32, 79],  tint: '#ffa3c4' },
+    { name: 'Tím mộng mơ', core: [248, 222, 255], mid: [196, 98, 255], outer: [112, 64, 255], tint: '#dcaeff' },
+    { name: 'Biển đêm',    core: [218, 250, 255], mid: [0, 192, 255],  outer: [72, 96, 255],  tint: '#a4e6ff' },
+    { name: 'Nắng vàng',   core: [255, 246, 200], mid: [255, 168, 48], outer: [255, 86, 36],  tint: '#ffdc92' }
+  ];
+  var thIdx = 0, C = THEMES[0], SEQ = [], GCOL = [];
+
+  var WORDS = ['I LOVE YOU', 'ANH YÊU EM', 'EM YÊU ANH', 'CỤC DÀNG', 'BÉ IU', 'TE AMO', "JE T'AIME", 'SARANGHAE',
+    'AISHITERU', 'WO AI NI', 'TI AMO', 'ICH LIEBE DICH', '1 NĂM ♥', '20/10'];
+  var PATTERN = 'ANH YÊU EM  ♥  ';
+  var PL = PATTERN.length;
+  var FONT = '"Baloo 2","Be Vietnam Pro",system-ui,sans-serif';
+
+  if (document.fonts && document.fonts.load) {
+    try { document.fonts.load('800 14px "Baloo 2"', 'ANH YÊU EM CỤC DÀNG BÉ IU'); } catch (e) {}
+  }
+
+  /* ---------- toán trái tim (tâm đã dời về giữa hình) ---------- */
+  function HX(t) { var s = Math.sin(t); return 16 * s * s * s; }
+  function HY(t) { return -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)) - 2.5; }
+  function DX(t) { var s = Math.sin(t); return 48 * s * s * Math.cos(t); }
+  function DY(t) { return 13 * Math.sin(t) - 10 * Math.sin(2 * t) - 6 * Math.sin(3 * t) - 4 * Math.sin(4 * t); }
+
+  /* bảng độ dài cung: chữ cách đều nhau dọc viền tim */
+  var NT = 720, CUM = new Float32Array(NT + 1), HL = 0;
+  (function () {
+    var px = HX(0), py = HY(0);
+    for (var i = 1; i <= NT; i++) {
+      var t = i / NT * TAU, x = HX(t), y = HY(t);
+      HL += Math.hypot(x - px, y - py); CUM[i] = HL; px = x; py = y;
+    }
+  })();
+  function uToT(u) {
+    var target = u * HL, lo = 0, hi = NT;
+    while (hi - lo > 1) { var mid = (lo + hi) >> 1; if (CUM[mid] <= target) lo = mid; else hi = mid; }
+    var seg = CUM[hi] - CUM[lo];
+    return (lo + (seg > 0 ? (target - CUM[lo]) / seg : 0)) / NT * TAU;
+  }
+  var UNIT = [];
+  for (var q = 0; q < 90; q++) { var tq = q / 90 * TAU; UNIT.push([HX(tq), HY(tq)]); }
+
+  /* ---------- tiện ích ---------- */
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+  function rgba(c, a) { return 'rgba(' + (c[0] | 0) + ',' + (c[1] | 0) + ',' + (c[2] | 0) + ',' + a + ')'; }
+  function mix(a, c, f) { return [a[0] + (c[0] - a[0]) * f, a[1] + (c[1] - a[1]) * f, a[2] + (c[2] - a[2]) * f]; }
+  function ringColor(ph) {
+    var p = ((ph % TAU) + TAU) % TAU / TAU * 4, i = Math.floor(p), f = p - i;
+    return mix(SEQ[i % 4], SEQ[(i + 1) % 4], f);
+  }
+
+  /* ---------- trạng thái ---------- */
+  var W = 0, H = 0, dpr = 1, S = 10, cx = 0, cy = 0, fs = 13, count = 90, safeTop = 0, safeBot = 0;
+  var photons = [], groups = [[], [], []], stars = [], shooters = [], words = [], shocks = [], sparks = [];
+  var elapsed = 0, last = 0, raf = 0, running = false, intro = true, failsafe = 0;
+  var ptr = { x: 0, y: 0, down: false, has: false };
+  var pushT = 0, pushX = 0, pushY = 0, pushK = 1;
+  var appear = 0, flow = 0, beat = 1, lastCyc = -1, sched = [], si = 0;
+
+  function applyTheme() {
+    C = THEMES[thIdx];
+    SEQ = [C.core, C.mid, C.outer, C.mid];
+    GCOL = [rgba(C.core, 0.9), rgba(C.mid, 0.85), rgba(C.outer, 0.8)];
+    root.style.setProperty('--cmid', rgba(C.mid, 1));
+    root.style.setProperty('--cglow', rgba(C.mid, 0.26));
+    root.style.setProperty('--ctint', C.tint);
+    themeBtn.textContent = '🎨 ' + C.name;
+  }
+
+  function measureSafe() {
+    var p = document.createElement('div');
+    p.style.cssText = 'position:fixed;left:0;top:0;visibility:hidden;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)';
+    document.body.appendChild(p);
+    var cs = getComputedStyle(p);
+    safeTop = parseFloat(cs.paddingTop) || 0; safeBot = parseFloat(cs.paddingBottom) || 0;
+    document.body.removeChild(p);
+  }
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = root.clientWidth || window.innerWidth; H = root.clientHeight || window.innerHeight;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    measureSafe();
+    var top = 92 + safeTop, bot = 190 + safeBot;
+    var availH = Math.max(260, H - top - bot);
+    S = Math.min(W * 0.84 / 32, availH / 39.5);
+    cx = W / 2; cy = top + availH / 2;
+    fs = clamp(Math.round(S * 1.25), 11, 22);
+    count = Math.max(PL, Math.round(HL * S / (fs * 0.95) / PL) * PL);
+    art.style.width = Math.round(22 * S) + 'px';
+    art.style.left = cx + 'px';
+    art.style.top = Math.round(cy + 0.5 * S) + 'px';
+    root.style.setProperty('--cy', Math.round(cy) + 'px');
+  }
+
+  /* ---------- tạo đối tượng ---------- */
+  function newPhoton(fly) {
+    var layer = 1.05 + Math.pow(Math.random(), 1.4) * 0.42;
+    var a = Math.random() * TAU, d = Math.max(W, H) * rnd(0.55, 1.2);
+    return {
+      t: Math.random() * TAU, layer: layer, sp: rnd(0.010, 0.022) / Math.sqrt(layer),
+      ox: fly ? Math.cos(a) * d : 0, oy: fly ? Math.sin(a) * d : 0, vx: 0, vy: 0, px: null, py: null,
+      z: (Math.random() - 0.5) * S * 0.35, delay: fly ? Math.random() * 1.2 : Math.random() * 0.2
+    };
+  }
+  function newShooter() {
+    var sc = clamp(W / 900, 0.45, 1.1), s = {};
+    if (Math.random() < 0.6) { s.x = rnd(W * 0.2, W + 100); s.y = rnd(-60, 60); }
+    else { s.x = rnd(W - 60, W + 80); s.y = rnd(0, H * 0.45); }
+    var ang = rnd(135, 158) * Math.PI / 180, sp = rnd(10, 17) * (0.55 + sc * 0.6);
+    s.vx = Math.cos(ang) * sp; s.vy = Math.sin(ang) * sp; s.len = rnd(70, 130) * (0.6 + sc * 0.4);
+    s.on = false; s.wait = rnd(0.3, 3);
+    return s;
+  }
+  function newWord(initial) {
+    var w = {}, sc = clamp(W / 900, 0.4, 1);
+    w.text = WORDS[(Math.random() * WORDS.length) | 0];
+    var ang = (Math.random() < 0.5 ? rnd(-55, -25) : rnd(125, 155)) * Math.PI / 180, sp = rnd(0.35, 0.9) * (0.7 + sc * 0.6);
+    w.vx = Math.cos(ang) * sp; w.vy = Math.sin(ang) * sp;
+    if (initial) { w.x = rnd(30, W - 30); w.y = rnd(80, H - 80); }
+    else if (w.vx > 0) { w.x = rnd(-160, -30); w.y = rnd(100, H - 60); }
+    else { w.x = rnd(W + 30, W + 160); w.y = rnd(60, H - 160); }
+    w.a = rnd(0.35, 0.8); w.rot = Math.atan(w.vy / w.vx) * 0.6; w.sz = (W < 500 ? 11 : 13) + ((Math.random() * 3) | 0);
+    return w;
+  }
+  function newSpark() {
+    var t = Math.random() * TAU, r = Math.sqrt(0.08 + Math.random() * 0.78);
+    return { x: cx + HX(t) * S * r, y: cy + HY(t) * S * r, vx: rnd(-0.3, 0.3), vy: rnd(-0.55, 0.15), s: rnd(0.9, 2.2), a: Math.random(), f: rnd(0.012, 0.03), c: (Math.random() * 3) | 0 };
+  }
+
+  function build(fly) {
+    var n = reduce ? 360 : Math.max(500, Math.min(1300, Math.round(W * H / 420)));
+    photons = []; groups = [[], [], []];
+    for (var i = 0; i < n; i++) {
+      var p = newPhoton(fly); photons.push(p);
+      groups[p.layer < 1.17 ? 0 : p.layer < 1.31 ? 1 : 2].push(p);
+    }
+    stars = []; for (i = 0; i < 110; i++) stars.push({ x: Math.random() * W, y: Math.random() * H, r: rnd(0.6, 1.8), sp: rnd(0.6, 2.4), ph: Math.random() * TAU });
+    shooters = []; for (i = 0; i < 4; i++) shooters.push(newShooter());
+    words = []; for (i = 0; i < (W < 500 ? 14 : 22); i++) words.push(newWord(true));
+    sparks = []; for (i = 0; i < (W < 500 ? 46 : 80); i++) sparks.push(newSpark());
+  }
+
+  /* ---------- điều phối kịch bản ---------- */
+  function setCap(txt) {
+    capEl.classList.add('out');
+    setTimeout(function () { capEl.textContent = txt; capEl.classList.remove('out'); }, 380);
+  }
+  function showGo() { goBtn.classList.add('show'); hintEl.classList.add('show'); }
+  function flash() { flashEl.classList.remove('go'); void flashEl.offsetWidth; flashEl.classList.add('go'); }
+  function nova(x, y, k) { pushX = x; pushY = y; pushK = k; pushT = 0.35; }
+  function daysTogether() {
+    if (!LOVE_START) return 0;
+    var d = new Date(LOVE_START + 'T00:00:00'); if (isNaN(d.getTime())) return 0;
+    return Math.max(0, Math.floor((Date.now() - d.getTime()) / 864e5) + 1);
+  }
+  function buildSchedule() {
+    var days = daysTogether();
+    var together = days > 0 ? 'Ngày thứ ' + days + ' bên nhau' : 'Một năm bên nhau';
+    if (intro) {
+      sched = [
+        [0.5, function () { setCap('Gửi cục dàng của anh'); }],
+        [2.6, function () { art.classList.add('show'); }],
+        [3.1, function () { setCap(together); }],
+        [3.9, function () { nova(cx, cy, 12); shocks.push({ s: 0.98 }); flash(); }],
+        [4.2, showGo],
+        [6.0, function () { setCap('Chúc mừng 20/10 ♥'); }]
+      ];
+    } else {
+      sched = [
+        [0.1, function () { art.classList.add('show'); }],
+        [0.3, function () { setCap('Chúc mừng 20/10 ♥'); }],
+        [0.9, showGo]
+      ];
+    }
+    subEl.textContent = days > 0 ? 'Ngày thứ ' + days + ' bên nhau' : 'Ngày của em';
+  }
+
+  /* ---------- vòng lặp vẽ ---------- */
+  function step(now) {
+    var dt = Math.min(0.05, Math.max(0.001, (now - last) / 1000)); last = now; elapsed += dt;
+    var k = dt * 60, i, j, g, p;
+
+    while (si < sched.length && elapsed >= sched[si][0]) { sched[si][1](); si++; }
+
+    var tc = elapsed % 1.1, bv = 0;
+    if (tc < 0.18) bv = Math.sin(tc / 0.18 * Math.PI) * 0.08;
+    else if (tc >= 0.22 && tc < 0.40) bv = Math.sin((tc - 0.22) / 0.18 * Math.PI) * 0.04;
+    beat = 1 + bv;
+    var cyc = Math.floor(elapsed / 1.1);
+    if (cyc !== lastCyc) { lastCyc = cyc; if (elapsed > 2.6 && cyc % 2 === 0) shocks.push({ s: 0.98 }); }
+    if (pushT > 0) pushT -= dt;
+    appear = elapsed > 0.4 ? (elapsed - 0.4) * (intro ? 40 : 140) : 0;
+    flow = (flow + 0.0016 * k) % 1;
+    var introFade = intro ? clamp((elapsed - 1.0) / 1.5, 0, 1) : 1;
+
+    /* nền mờ dần để giữ vệt sáng */
+    ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+    ctx.fillStyle = 'rgba(5,3,12,' + (reduce ? 0.5 : 0.26) + ')';
+    ctx.fillRect(0, 0, W, H);
+
+    /* sao nền */
+    for (i = 0; i < stars.length; i++) {
+      var st = stars[i];
+      ctx.fillStyle = 'rgba(200,215,245,' + (0.25 + 0.4 * (0.5 + 0.5 * Math.sin(elapsed * st.sp + st.ph))).toFixed(3) + ')';
+      ctx.fillRect(st.x, st.y, st.r, st.r);
+    }
+
+    /* sao băng */
+    ctx.lineWidth = 2; ctx.lineCap = 'round';
+    for (i = 0; i < shooters.length; i++) {
+      var sh = shooters[i];
+      if (!sh.on) { sh.wait -= dt; if (sh.wait <= 0) sh.on = true; continue; }
+      sh.x += sh.vx * k; sh.y += sh.vy * k;
+      if (sh.x < -160 || sh.y > H + 100) { shooters[i] = newShooter(); continue; }
+      var nrm = Math.hypot(sh.vx, sh.vy), tx2 = sh.x - sh.vx / nrm * sh.len, ty2 = sh.y - sh.vy / nrm * sh.len;
+      var gr = ctx.createLinearGradient(sh.x, sh.y, tx2, ty2);
+      gr.addColorStop(0, 'rgba(255,255,255,0.95)'); gr.addColorStop(1, rgba(C.mid, 0));
+      ctx.strokeStyle = gr; ctx.beginPath(); ctx.moveTo(sh.x, sh.y); ctx.lineTo(tx2, ty2); ctx.stroke();
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(sh.x, sh.y, 2, 0, TAU); ctx.fill();
+    }
+
+    /* sóng xung kích hình tim */
+    for (i = shocks.length - 1; i >= 0; i--) {
+      var sw = shocks[i]; sw.s += 0.5 * dt;
+      var life = (sw.s - 0.98) / 1.5;
+      if (life >= 1) { shocks.splice(i, 1); continue; }
+      var al = Math.pow(1 - life, 1.3);
+      ctx.beginPath();
+      for (j = 0; j <= UNIT.length; j++) {
+        var u = UNIT[j % UNIT.length], sx = cx + u[0] * S * sw.s, sy = cy + u[1] * S * sw.s;
+        if (j === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy);
+      }
+      ctx.lineWidth = 5; ctx.strokeStyle = rgba(C.mid, (al * 0.3).toFixed(3)); ctx.stroke();
+      ctx.lineWidth = 1.6; ctx.strokeStyle = 'rgba(255,255,255,' + (al * 0.9).toFixed(3) + ')'; ctx.stroke();
+    }
+
+    /* chữ tình yêu đa ngôn ngữ bay xéo */
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    for (i = 0; i < words.length; i++) {
+      var w = words[i]; w.x += w.vx * k; w.y += w.vy * k;
+      if (w.x < -190 || w.x > W + 190 || w.y < -90 || w.y > H + 90) { words[i] = newWord(false); continue; }
+      ctx.save(); ctx.translate(w.x, w.y); ctx.rotate(w.rot);
+      ctx.font = '700 ' + w.sz + 'px ' + FONT;
+      ctx.fillStyle = rgba(C.core, (w.a * introFade * 0.85).toFixed(3));
+      ctx.fillText(w.text, 0, 0); ctx.restore();
+    }
+
+    /* bụi sao trong lòng trái tim */
+    if (appear > count * 0.4) {
+      ctx.globalCompositeOperation = 'lighter';
+      for (i = 0; i < sparks.length; i++) {
+        var sp = sparks[i]; sp.x += sp.vx * k; sp.y += sp.vy * k; sp.a -= sp.f * k;
+        if (sp.a <= 0) { sparks[i] = newSpark(); sparks[i].a = 1; continue; }
+        ctx.fillStyle = rgba(SEQ[sp.c], (sp.a * 0.9).toFixed(3));
+        ctx.beginPath(); ctx.arc(sp.x, sp.y, sp.s, 0, TAU); ctx.fill();
+      }
+      ctx.globalCompositeOperation = 'source-over';
+    }
+
+    /* dòng hạt photon xoáy hình tim */
+    var decay = Math.pow(0.955, k), damp = Math.pow(0.9, k), beatL = 1 + (beat - 1) * 0.5;
+    ctx.globalAlpha = introFade; ctx.lineCap = 'round';
+    for (g = 0; g < 3; g++) {
+      var arr = groups[g];
+      ctx.beginPath();
+      for (i = 0; i < arr.length; i++) {
+        p = arr[i];
+        if (elapsed < p.delay + 0.6) continue;
+        p.t += p.sp * k; p.ox *= decay; p.oy *= decay;
+        var sc2 = S * p.layer * beatL, tx = cx + HX(p.t) * sc2, ty = cy + HY(p.t) * sc2 + p.z;
+        if (pushT > 0) {
+          var ddx = pushX - tx, ddy = pushY - ty, d2 = ddx * ddx + ddy * ddy + 350, dd = Math.sqrt(d2), pu = 16000 * pushK / d2 * k;
+          p.vx -= ddx / dd * pu; p.vy -= ddy / dd * pu;
+        } else if (ptr.has) {
+          var dx = ptr.x - tx, dy = ptr.y - ty, e2 = dx * dx + dy * dy + 350, d = Math.sqrt(e2);
+          if (ptr.down) { var pl = 7500 / e2 * 1.8 * k; p.vx += dx / d * pl; p.vy += dy / d * pl; }
+          else if (d < 200) { var swl = (200 - d) * 0.05 * k; p.vx += -dy / d * swl; p.vy += dx / d * swl; }
+        }
+        p.vx *= damp; p.vy *= damp;
+        var fx = tx + p.ox + p.vx, fy = ty + p.oy + p.vy;
+        if (p.px !== null) { ctx.moveTo(p.px, p.py); ctx.lineTo(fx, fy); }
+        p.px = fx; p.py = fy;
+      }
+      ctx.strokeStyle = GCOL[g]; ctx.lineWidth = g === 0 ? 2.2 : g === 1 ? 1.8 : 1.4; ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+
+    /* chữ chạy quanh viền tim */
+    if (appear > 0) {
+      ctx.font = '800 ' + fs + 'px ' + FONT; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      if (!reduce) { ctx.shadowColor = rgba(C.mid, 0.9); ctx.shadowBlur = 8; }
+      for (i = 0; i < count; i++) {
+        var ch = PATTERN.charAt(i % PL); if (ch === ' ') continue;
+        var la = clamp((appear - i) / 5, 0, 1); if (la <= 0) continue;
+        var uu = (i / count + flow) % 1, t = uToT(uu);
+        var col = ringColor(uu * TAU + elapsed * 1.5);
+        ctx.save(); ctx.translate(cx + HX(t) * S * beat, cy + HY(t) * S * beat); ctx.rotate(Math.atan2(DY(t), DX(t)));
+        ctx.globalAlpha = la; ctx.fillStyle = rgba(col, 1); ctx.fillText(ch, 0, 0); ctx.restore();
+      }
+      ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+    }
+
+    /* vòng tròn tụ điểm khi đang giữ */
+    if (ptr.down && ptr.has) {
+      var pr = 22 + Math.sin(elapsed * 20) * 7;
+      ctx.lineWidth = 2; ctx.strokeStyle = rgba(C.core, 0.9); ctx.beginPath(); ctx.arc(ptr.x, ptr.y, pr, 0, TAU); ctx.stroke();
+      ctx.lineWidth = 1; ctx.strokeStyle = rgba(C.mid, 0.7); ctx.beginPath(); ctx.arc(ptr.x, ptr.y, pr + 12, 0, TAU); ctx.stroke();
+    }
+
+    art.style.transform = 'translate(-50%,-50%) scale(' + (1 + (beat - 1) * 0.8).toFixed(4) + ')';
+  }
+
+  function frame(now) {
+    if (!running) return;
+    raf = requestAnimationFrame(frame);
+    try { step(now); }
+    catch (err) {
+      if (window.console) console.error(err);
+      running = false; cancelAnimationFrame(raf); showGo();
+    }
+  }
+
+  /* ---------- mở / đóng ---------- */
+  function open(isIntro) {
+    intro = isIntro !== false;
+    root.classList.add('on'); root.setAttribute('aria-hidden', 'false');
+    applyTheme(); resize(); build(intro);
+    elapsed = 0; si = 0; appear = 0; flow = 0; shocks = []; pushT = 0; lastCyc = -1; beat = 1;
+    art.classList.remove('show'); goBtn.classList.remove('show'); hintEl.classList.remove('show');
+    capEl.textContent = ''; buildSchedule();
+    ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1; ctx.fillStyle = '#05030c'; ctx.fillRect(0, 0, W, H);
+    running = true; last = performance.now();
+    cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
+    requestAnimationFrame(function () { root.classList.add('vis'); });
+    clearTimeout(failsafe); failsafe = setTimeout(showGo, 9000);
+  }
+  function close() {
+    root.classList.remove('vis'); clearTimeout(failsafe);
+    setTimeout(function () {
+      if (root.classList.contains('vis')) return;
+      root.classList.remove('on'); root.setAttribute('aria-hidden', 'true'); running = false; cancelAnimationFrame(raf);
+    }, 760);
+    if (window.heartBurst) {
+      setTimeout(function () { window.heartBurst(window.innerWidth / 2, window.innerHeight * 0.5, 46); }, 420);
+      setTimeout(function () { window.heartBurst(window.innerWidth * 0.25, window.innerHeight * 0.4, 22); window.heartBurst(window.innerWidth * 0.75, window.innerHeight * 0.4, 22); }, 620);
+    }
+  }
+
+  /* ---------- tương tác ---------- */
+  function release(e) {
+    if (ptr.down) {
+      ptr.down = false; nova(ptr.x, ptr.y, 1); shocks.push({ s: 0.98 });
+      try { if (navigator.vibrate) navigator.vibrate(25); } catch (err) {}
+    }
+    if (e && e.pointerType === 'touch') ptr.has = false;
+  }
+  root.addEventListener('pointerdown', function (e) {
+    e.stopPropagation();
+    if (e.target.closest && e.target.closest('button')) return;
+    ptr.x = e.clientX; ptr.y = e.clientY; ptr.down = true; ptr.has = true;
+    try { root.setPointerCapture(e.pointerId); } catch (err) {}
+  });
+  root.addEventListener('pointermove', function (e) { e.stopPropagation(); ptr.x = e.clientX; ptr.y = e.clientY; ptr.has = true; });
+  root.addEventListener('pointerup', function (e) { e.stopPropagation(); release(e); });
+  root.addEventListener('pointercancel', release);
+  root.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') { ptr.has = false; } });
+  themeBtn.addEventListener('click', function () { thIdx = (thIdx + 1) % THEMES.length; applyTheme(); shocks.push({ s: 0.98 }); flash(); });
+  goBtn.addEventListener('click', close);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && root.classList.contains('vis')) close(); });
+  window.addEventListener('resize', function () { if (running) { resize(); build(false); } });
+
+  window.Cosmos = { open: open, close: close };
+})();
+</script>
+<script>
+/* =========================================================
+   CHỈNH THÊM CHO CÁC TAB: bảng điểm chạy lại + đếm số, thư gõ chữ, nút mở lại vũ trụ
+   ========================================================= */
+(function () {
+  var meters = document.getElementById('meters');
+  var vals = [].slice.call(document.querySelectorAll('#meters .m-val'));
+  var orig = vals.map(function (v) { return v.textContent; });
+  [].slice.call(document.querySelectorAll('#meters .meter')).forEach(function (li, i) {
+    li.style.setProperty('--d', (i * 0.12) + 's');
+  });
+
+  function countUp(el, text, ms, delay) {
+    var m = text.match(/^(\d+)(.*)$/);
+    if (!m) { el.textContent = text; return; }
+    var target = +m[1], suffix = m[2], t0 = null;
+    el.textContent = '0' + suffix;
+    function f(now) {
+      if (t0 === null) t0 = now + delay;
+      var p = Math.min(1, Math.max(0, (now - t0) / ms)), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * e) + suffix;
+      if (p < 1) requestAnimationFrame(f);
+    }
+    requestAnimationFrame(f);
+  }
+
+  function replayScore() {
+    if (!meters) return;
+    meters.classList.add('pre', 'nt');
+    void meters.offsetWidth;
+    meters.classList.remove('nt');
+    requestAnimationFrame(function () { requestAnimationFrame(function () { meters.classList.remove('pre'); }); });
+    vals.forEach(function (v, i) { countUp(v, orig[i], 1100, i * 120); });
+  }
+
+  var letter = document.getElementById('letterText');
+  var letterHTML = letter ? letter.innerHTML : '';
+  var typed = false, timer = 0;
+
+  function finishLetter() {
+    clearTimeout(timer);
+    if (!letter) return;
+    letter.innerHTML = letterHTML; letter.classList.remove('typing'); letter.style.minHeight = '';
+  }
+  function typeLetter() {
+    if (!letter || typed) return;
+    typed = true;
+    letter.innerHTML = letterHTML;
+    letter.style.minHeight = letter.offsetHeight + 'px';
+    letter.innerHTML = '';
+    letter.classList.add('typing');
+    var i = 0;
+    (function step() {
+      if (i >= letterHTML.length) {
+        finishLetter();
+        if (window.heartBurst) {
+          window.heartBurst(window.innerWidth / 2, window.innerHeight * 0.4, 40);
+          setTimeout(function () { window.heartBurst(window.innerWidth * 0.2, window.innerHeight * 0.5, 20); window.heartBurst(window.innerWidth * 0.8, window.innerHeight * 0.5, 20); }, 220);
+        }
+        return;
+      }
+      if (letterHTML.charAt(i) === '<') i = letterHTML.indexOf('>', i) + 1; else i++;
+      letter.innerHTML = letterHTML.slice(0, i);
+      var prev = letterHTML.charAt(i - 1);
+      timer = setTimeout(step, /[.!?]/.test(prev) ? 140 : /[,;]/.test(prev) ? 70 : 14);
+    })();
+  }
+  if (letter) letter.addEventListener('click', function () { if (letter.classList.contains('typing')) finishLetter(); });
+
+  window.onTabShown = function (id) {
+    if (id === 'tab-score') replayScore();
+    if (id === 'tab-letter') typeLetter();
+  };
+
+  var openBtn = document.getElementById('openCosmos');
+  if (openBtn) openBtn.addEventListener('click', function () { if (window.Cosmos) window.Cosmos.open(false); });
+})();
+</script>
+
+</body>
+</html>
